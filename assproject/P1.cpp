@@ -25,43 +25,43 @@ void emitError(char *s)
 	exit(0);
 }
 
-void decodeReg( unsigned int r, string reg)
+string decodeReg(unsigned int r)
 {
 	switch(r){
-	case(0): reg="zero";break;
-	case(1): reg="at";break;
-	case(2): reg="v0";break;
-	case(3): reg="v1";break;
-	case(4): reg="a0";break;
-	case(5): reg="a1";break;
-	case(6): reg="a2";break;
-	case(7): reg="a3";break;
-	case(8): reg="t0";break;
-	case(9): reg="t1";break;
-	case(10): reg="t2";break;
-	case(11): reg="t3";break;
-	case(12): reg="t4";break;
-	case(13): reg="t5";break;
-	case(14): reg="t6";break;
-	case(15): reg="t7";break;
-	case(16): reg="s0";break;
-	case(17): reg="s1";break;
-	case(18): reg="s2";break;
-	case(19): reg="s3";break;
-	case(20): reg="s4";break;
-	case(21): reg="s5";break;
-	case(22): reg="s6";break;
-	case(23): reg="s7";break;
-	case(24): reg="t8";break;
-	case(25): reg="t9";break;
-	case(26): reg="k0";break;
-	case(27): reg="k1";break;
-	case(28): reg="gp";break;
-	case(29): reg="sp";break;
-	case(30): reg="fp";break;
-	case(31): reg="ra";break;
+	case 0: return "zero";
+	case 1: return "at";
+	case 2: return "v0";
+	case 3 : return "v1";
+	case 4: return "a0";
+	case 5: return "a1";
+	case 6: return "a2";
+	case 7: return "a3";
+	case 8 : return "t0";
+	case 9: return "t1";
+	case 10: return "t2";
+	case 11: return "t3";
+	case 12: return "t4";
+	case 13: return "t5";
+	case 14 : return "t6";
+	case 15 : return "t7";
+	case 16 : return "s0";
+	case 17: return "s1";
+	case 18 : return "s2";
+	case 19 : return "s3";
+	case 20: return "s4";
+	case 21 : return "s5";
+	case 22: return "s6";
+	case 23: return "s7";
+	case 24: return "t8";
+	case 25: return "t9";
+	case 26: return "k0";
+	case 27: return "k1";
+	case 28: return "gp";
+	case 29: return "sp";
+	case 30: return "fp";
+	case 31: return "ra";
 
-	default: reg="unknown reg";
+	default: return "unknown reg";
 
 	}
 }
@@ -85,76 +85,81 @@ void decodeInst(unsigned int instWord)
 		rt    = (instWord>>16) & 0x1f;
 		rs    = (instWord>>21) & 0x1f;
 		string rS,rT,rD;
+			
+
 		switch(func){
 			//add
-			decodeReg(rs,rS);
-			decodeReg(rt,rT);
-			decodeReg(rd,rD);
-
+		
 			case 0x20:
-				cout << "0x" << hex << pc << "\tADD\t$" <<dec<<rs<< ", $" << rd << ", $" << rt << "\n" ;
+
+				cout << "0x" << hex << pc << "\tadd\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;
 			
 				regs[rd]=regs[rs]+regs[rt];	
 				break;
 
 			//addu
-			case 0x21: cout << "0x" << hex << pc << "\tADDU\t$" << dec << rd << ", $" << rs << ", $" << rt << "\n" ;
+			case 0x21: cout << "0x" << hex << pc << "\taddu\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;
 			
 				regs[rd]=regs[rs]+regs[rt];	
 				break;
 		
 				//sub
-			case 0x22: cout << "0x" << hex << pc << "\tSUB\t$" << dec << rd << ", $" << rs << ", $" << rt << "\n" ;
-			
+			case 0x22: cout << "0x" << hex << pc << "\tsub\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;			
 				regs[rd]=regs[rs]-regs[rt];	
 				break;
 
 					//and
-			case 0x24: cout << "0x" << hex << pc << "\tAND\t$" << dec << rd << ", $" << rs << ", $" << rt << "\n" ;
+			case 0x24: cout << "0x" << hex << pc << "\tand\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;
 			
 				regs[rd]=regs[rs]&regs[rt];	
 				break;
 
 					//or
-			case 0x25: cout << "0x" << hex << pc << "\tOR\t$" << dec << rd << ", $" << rs << ", $" << rt << "\n" ;
+			case 0x25: cout << "0x" << hex << pc << "\tor\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;
 			
 				regs[rd]=regs[rs]|regs[rt];	
 				break;
 
 					//xor
-			case 0x26: cout << "0x" << hex << pc << "\tXOR\t$" << dec << rd << ", $" << rs << ", $" << rt << "\n" ;
+			case 0x26: cout << "0x" << hex << pc << "\txor\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;
 			
 				regs[rd]=regs[rs]^regs[rt];	
 				break;
 
 					//slt
-			case 0x2A: cout << "0x" << hex << pc << "\tSLT\t$" << dec << rd << ", $" << rs << ", $" << rt << "\n" ;
+			case 0x2A: cout << "0x" << hex << pc << "\tslt\t$" <<decodeReg(rd)<< ", $" << decodeReg(rs) << ", $" << decodeReg(rt)<< "\n" ;
 			
 				regs[rd]=(regs[rs]<regs[rt])? 1:0;	
 				break;
 
 					//srl
-			case 0x02: cout << "0x" << hex << pc << "\tSRL\t$" << dec << rd << ", $" << rt << ", " << shamt << "\n" ;
+			case 0x02: cout << "0x" << hex << pc << "\tsrl\t$" <<decodeReg(rd) << ", $" << decodeReg(rt) << ", " <<dec<< shamt << "\n" ;
 			
 				regs[rd]=regs[rt]>>shamt;	
 				break;
 
 					//sll
-			case 0x00: cout << "0x" << hex << pc << "\tSLL\t$" << dec << rd << ", $" << rt << ", " << shamt << "\n" ;
+			case 0x00: cout << "0x" << hex << pc << "\tsll\t$" <<decodeReg(rd) << ", $" << decodeReg(rt) << ", " <<dec<< shamt << "\n" ;
 			
 				regs[rd]=regs[rt]<<shamt;	
 				break;
 
 
 					//jr
-			case 0x08: cout << "0x" << hex << pc << "\tJR\t$" << dec << rs << "\n" ;
+			case 0x08: cout << "0x" << hex << pc << "\tjr\t$" << decodeReg(rs) << "\n" ;
 			
 				pc=regs[rs];	
 				break;
 
 					//syscall
-			case 0x0C: cout << "0x" << hex << pc << "\tSYSCALL\n" ;
-				
+			case 0x0C: cout << "0x" << hex << pc << "\tsyscall\n" ;
+				switch(regs[2]){
+				case 1:
+				case 4:
+					cout<<endl;
+					cout<<"\t"<<dec<<regs[4]<<endl;break;
+				case 10: cout<<"The program ends"<<endl;break;		//exit(0);
+				}
 				break;
 
 
@@ -180,47 +185,47 @@ void decodeInst(unsigned int instWord)
 			case 0x23:	//LW
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					address 	= regs[rs] + sImm;
-					cout << "0x" << hex << pc << "\tLW\t$" << dec << rt << "," << sImm << "($" << rs << ")\n";
-				//	regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
+					cout << "0x" << hex << pc << "\tlw\t$" << decodeReg(rt) << "," << sImm << "($" << decodeReg(rs) << ")\n";
+					regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as other instructions are not implemented 
 				break;
 
 			case 0x2B:	//sw
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					address 	= regs[rs] + sImm;
-					cout << "0x" << hex << pc << "\tSW\t$" << dec << rt << "," << sImm << "($" << rs << ")\n";
-				//	regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
+					cout << "0x" << hex << pc << "\tsw\t$" << decodeReg(rt) << "," << sImm << "($" << decodeReg(rs) << ")\n";
+					memory[address - 0x10010000]= regs[rt];		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 			case 0x08:	//addi
 				sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tADDI\t$" << dec << rt << ", $" << rs << ", " << sImm << "\n" ;
+					cout << "0x" << hex << pc << "\taddi\t$" <<decodeReg(rt) << ", $" << decodeReg(rs) << ", " <<dec<< sImm << "\n" ;
 			//
 				regs[rt]=regs[rs]+sImm;
 				break;
 
 				case 0x09:	//addiu
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tADDIU\t$" << dec << rt << ", $" << rs << ", " << sImm << "\n" ;
+					cout << "0x" << hex << pc << "\taddiu\t$" <<decodeReg(rt) << ", $" << decodeReg(rs) << ", " << dec<<sImm << "\n" ;
 			//
 				regs[rt]=regs[rs]+sImm;
 				break;
 
 				case 0x0C:	//andi
 					zImm 	= 0x00000000 | imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tANDI\t$" << dec << rt << ", $" << rs << ",  0x" << hex<<zImm << "\n" ;
+					cout << "0x" << hex << pc << "\tandi\t$" <<decodeReg(rt) << ", $" << decodeReg(rs) << ",  0x" << hex<<zImm << "\n" ;
 			//
 				regs[rt]=regs[rs]&zImm;
 				break;
 
 				case 0x0D:	//ori
 					zImm 	= 0x00000000 | imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tORI\t$" << dec << rt << ", $" << rs << ",  0x" << hex<<zImm << "\n" ;
+					cout << "0x" << hex << pc << "\tori\t$" <<decodeReg(rt) << ", $" << decodeReg(rs) << ",  0x" << hex<<zImm << "\n" ;
 			//
 				regs[rt]=regs[rs]|zImm;
 				break;
 
 				case 0x0E:	//xori
 					zImm 	= 0x00000000 | imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tXORI\t$" << dec << rt << ", $" << rs << ",  0x" << hex<<zImm << "\n" ;
+					cout << "0x" << hex << pc << "\txori\t$" << decodeReg(rt) << ", $" << decodeReg(rs) << ",  0x" << hex<<zImm << "\n" ;
 			//
 				regs[rt]=regs[rs]^zImm;
 				break;
@@ -228,37 +233,37 @@ void decodeInst(unsigned int instWord)
 				case 0x28:	//sb
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					address 	= regs[rs]	+ sImm;
-					cout << "0x" << hex << pc << "\tSB\t$" << dec << rt << "," << sImm << "($" << rs << ")\n";
-					//regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
+					cout << "0x" << hex << pc << "\tsb\t$" << decodeReg(rt) << "," << sImm << "($" << decodeReg(rs) << ")\n";
+					memory[address - 0x10010000]=regs[rt];		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 
 				case 0x29:	//sh
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					address 	= regs[rs]	+ sImm;
-					cout << "0x" << hex << pc << "\tSH\t$" << dec << rt << "," << sImm << "($" << rs << ")\n";
-					//regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
+					cout << "0x" << hex << pc << "\tsh\t$"<< decodeReg(rt) << "," << sImm << "($" << decodeReg(rs) << ")\n";
+				memory[address - 0x10010000]=regs[rt];		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 
 			case 0x20:	//lb
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					address 	= regs[rs]	+ sImm;
-					cout << "0x" << hex << pc << "\tLB\t$" << dec << rt << "," << sImm << "($" << rs << ")\n";
-				//	regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
+					cout << "0x" << hex << pc << "\tlb\t$"<< decodeReg(rt) << "," << sImm << "($" << decodeReg(rs) << ")\n";
+					regs[rt]	= memory[address - 0x10010000]&0xFF;		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 
 
 			case 0x21:	//lh
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					address 	= regs[rs]	+ sImm;
-					cout << "0x" << hex << pc << "\tLH\t$" << dec << rt << "," << sImm << "($" << rs << ")\n";
-				//	regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
+					cout << "0x" << hex << pc << "\tlh\t$"<< decodeReg(rt) << "," << sImm << "($" << decodeReg(rs) << ")\n";
+					regs[rt]	= memory[address - 0x10010000]&0xFFFF;		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 
 			case 0x04:	//beq
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					bAdd		= (imm &0x4000)? (0xFFFC0000 | (imm*4) ): (0x00000000 | (imm*4) );
 					if(regs[rs]==regs[rt]) pc=pc+4+bAdd;
-				cout << "0x" << hex << pc << "\tBEQ\t$" << dec << rs << ", $" << rt << ", " << sImm << "\n" ;
+				cout << "0x" << hex << pc << "\tbeq\t$" << decodeReg(rs) << ", $" << decodeReg(rt) << ", " <<dec<< sImm << "\n" ;
 					//regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 
@@ -266,20 +271,20 @@ void decodeInst(unsigned int instWord)
 					sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
 					bAdd		= (imm &0x4000)? ( 0xFFFC0000 | (imm*4) ): ( 0x00000000 | (imm*4) );
 					if(regs[rs]!=regs[rt]) pc=pc+4+bAdd;
-				cout << "0x" << hex << pc << "\tBNE\t$" << dec << rs << ", $" << rt << ", " << sImm << "\n" ;
+				cout << "0x" << hex << pc << "\tbne\t$" << decodeReg(rs) << ", $" << decodeReg(rt) << ", " << dec<<sImm << "\n" ;
 					//regs[rt]	= memory[address - 0x10010000];		// uncommenting this would crash the program as othe instructions are not implemented 
 				break;
 
 			case 0x0A:	//slti
 				sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tSLTI\t$" << dec << rt << ", $" << rs << ", " << sImm << "\n" ;
+					cout << "0x" << hex << pc << "\tslti\t$" << decodeReg(rt) << ", $" << decodeReg(rs) << ", " <<dec<< sImm << "\n" ;
 			//
 				regs[rd]=(regs[rs]<sImm)? 1:0;
 				break;
 
 			case 0x0F:	//lui
 				sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
-					cout << "0x" << hex << pc << "\tLUI\t$" << dec << rt << ", $" << rs << ",  0x" << hex<<sImm << "\n" ;
+					cout << "0x" << hex << pc << "\tlui\t$" <<decodeReg(rt)<< ",  0x" << hex<<sImm << "\n" ;
 			//
 				regs[rt]=imm*65536; //regs[rt]={imm,16'b0)
 				break;
@@ -303,7 +308,7 @@ void decodeInst(unsigned int instWord)
 				Nadd= ((pc+4) & 0xF0000000);  //Nadd= pc+4[31:28]
 				add_2=(Nadd | (Address*4) );	//{ PC[31:28], address, 2’b0 }
 
-				cout << "0x" << hex << pc << "\tJ\t"<<"0x" << hex<< add_2 << "\n" ;
+				cout << "0x" << hex << pc << "\tj\t"<<"0x" << hex<< add_2 << "\n" ;
 				pc=add_2;
 				break;
 
@@ -312,7 +317,7 @@ void decodeInst(unsigned int instWord)
 				Nadd= ((pc+4) & 0xF0000000);  //Nimm= pc+4[31:28]
 				add_2=(Nadd | (Address*4) );	//{ PC[31:28], address, 2’b0 }
 
-				cout << "0x" << hex << pc << "\tJAL\t" <<"0x"<< hex<< add_2 << "\n" ;
+				cout << "0x" << hex << pc << "\tjal\t" <<"0x"<< hex<< add_2 << "\n" ;
 				regs[31]=pc;
 				pc=add_2;
 				break;
@@ -346,7 +351,7 @@ int main(int argc, char *argv[]){
 			decodeInst(instWord);
 		}
 		for(int i=0;i<32;i++)
-				cout<<dec<<i<<": \t0x"<<hex<< regs[i]<<"\n";		///////////
+				cout<<dec<<i<<": \t0x"<<dec<< regs[i]<<"\n";		///////////
 	} else emitError("Cannot access input file\n");
 
 	system ("pause");
