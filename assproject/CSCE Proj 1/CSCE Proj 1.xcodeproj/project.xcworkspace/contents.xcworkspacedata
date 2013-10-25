@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "self:CSCE Proj 1.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../P1.cpp">
+   </FileRef>
+</Workspace>
