@@ -21,6 +21,8 @@ char memory[8*1024];	// only 8KB of data memory
 
 bool pseudo = false; // for decoding MARS pseudo instructions
 
+int addresses[128];
+
 void decodeInst(unsigned int instWord);
 
 void emitError(char *s)
@@ -121,14 +123,13 @@ void i_format(unsigned int instWord) {
 					cout << "0x" << hex << pc << "\taddiu\t$" <<decodeReg(rt) << ", $" << decodeReg(rs) << ", " << dec<<sImm << "\n" ;
 				}
 				
-		//
 				regs[rt]=regs[rs]+sImm;
 			break;
 
 			case 0x0C:	//andi
 				zImm 	= 0x00000000 | imm;	// sign extending the immediate field
 				cout << "0x" << hex << pc << "\tandi\t$" <<decodeReg(rt) << ", $" << decodeReg(rs) << ",  0x" << hex<<zImm << "\n" ;
-		//
+
 				regs[rt]=regs[rs]&zImm;
 			break;
 
@@ -147,8 +148,8 @@ void i_format(unsigned int instWord) {
 			case 0x0E:	//xori
 				zImm 	= 0x00000000 | imm;	// sign extending the immediate field
 				cout << "0x" << hex << pc << "\txori\t$" << decodeReg(rt) << ", $" << decodeReg(rs) << ",  0x" << hex<<zImm << "\n" ;
-		//
-			regs[rt]=regs[rs]^zImm;
+
+				regs[rt]=regs[rs]^zImm;
 			break;
 
 			case 0x28:	//sb
@@ -198,8 +199,8 @@ void i_format(unsigned int instWord) {
 
 		case 0x0A:	//slti
 			sImm 		= (imm & 0x8000) ? (0xFFFF0000 | imm): imm;	// sign extending the immediate field
-				cout << "0x" << hex << pc << "\tslti\t$" << decodeReg(rt) << ", $" << decodeReg(rs) << ", " <<dec<< sImm << "\n" ;
-		//
+			cout << "0x" << hex << pc << "\tslti\t$" << decodeReg(rt) << ", $" << decodeReg(rs) << ", " <<dec<< sImm << "\n" ;
+			
 			regs[rd]=(regs[rs]<sImm)? 1:0;
 			break;
 
@@ -403,7 +404,7 @@ int main(int argc, char *argv[]){
 	if(inFile.is_open())
 	{
 		while(true){
-			if(!inFile.read ((char *)&instWord, 4)) break;
+			if(!inFile.read ((char *)& instWord, 4)) break;
 			decodeInst(instWord);
 		}
 		for(int i=0;i<32;i++)
